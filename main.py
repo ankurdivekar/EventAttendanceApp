@@ -13,7 +13,7 @@ def manage_entry():
         found = register_entry(qr_code)
         st.write(found)
         if found:
-            st.markdown(f"## :green[Entry registered for:{found}]")
+            st.markdown(f":green[Entry registered for:{found}]")
         else:
             st.markdown("## :red[No record found!]")
 
