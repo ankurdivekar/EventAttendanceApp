@@ -12,7 +12,7 @@ def manage_entry():
         # st.write(qr_code)
         found = register_entry(qr_code)
         if found:
-            st.markdown(f"## Entry registered for:\n{found}")
+            st.markdown(f"## :green[Entry registered for:{found}]")
         else:
             st.markdown("## :red[No record found!]")
 
@@ -32,11 +32,6 @@ def database_ops():
     st.markdown("""---""")
 
 
-st.sidebar.markdown("""---""")
-st.sidebar.title("Event Attendance App")
-st.sidebar.markdown("Built with :heart: by [Ankur](https://instagram.com/raagarock)")
-st.sidebar.markdown("""---""")
-
 page_names_to_funcs = {
     "Register Entry": manage_entry,
     "Database Ops": database_ops,
@@ -44,3 +39,8 @@ page_names_to_funcs = {
 
 selected_page = st.sidebar.selectbox("Select a page", page_names_to_funcs.keys())
 page_names_to_funcs[selected_page]()
+
+st.sidebar.markdown("""---""")
+st.sidebar.title("Event Attendance App")
+st.sidebar.markdown("Built with :heart: by [Ankur](https://instagram.com/raagarock)")
+st.sidebar.markdown("""---""")
