@@ -1,6 +1,6 @@
 import sqlite3
 import uuid
-
+from datetime import datetime, date
 import pandas as pd
 import streamlit as st
 
@@ -18,6 +18,48 @@ def create_connection(db_file):
         st.write(e)
 
     return conn
+
+
+def register_entry(qr_code):
+    # Find the entry in the master table
+    with create_connection(st.secrets["db_file"]) as conn:
+
+        query = conn.execute(
+            f"SELECT * FROM {st.secrets['master_table_name']} WHERE UUID ='{qr_code}'"
+        )
+        data = query.fetchall()
+        # print(data)
+        if data:
+            cols = [column[0] for column in query.description]
+            results_df = pd.DataFrame.from_records(data=data, columns=cols)
+            # st.dataframe(results_df)
+
+            try:
+                # Write to the attendance table
+                cur = conn.cursor()
+                cur.execute(
+                    f"INSERT INTO {st.secrets['attendees_table_name']} (UUID, \
+                    FirstName, LastName, MobileNo, Email, Date, Time) \
+                        VALUES (?, ?, ?, ?, ?, ?, ?)",
+                    (
+                        results_df.UUID.iloc[0],
+                        results_df.FirstName.iloc[0],
+                        results_df.LastName.iloc[0],
+                        results_df.MobileNo.iloc[0],
+                        results_df.Email.iloc[0],
+                        str(date.today()),
+                        str(datetime.now().strftime("%H:%M:%S")),
+                    ),
+                )
+                conn.commit()
+
+                return f"Entry: {results_df.FirstName.iloc[0]} {results_df.LastName.iloc[0]}"
+            except:
+                return "Entry already registered!"
+
+        else:
+            st.write("No record found!")
+            return None
 
 
 def show_db():
@@ -55,7 +97,7 @@ def reinitialize_db():
         cur.execute(
             f"CREATE TABLE {st.secrets['attendees_table_name']} (UUID, \
                 FirstName TEXT, LastName TEXT, \
-                MobileNo TEXT, Email TEXT, Date TEXT, Time TEXT)"
+                MobileNo TEXT, Email TEXT, Date TEXT UNIQUE, Time TEXT)"
         )
 
         cur.execute(
@@ -137,5 +179,4 @@ def upload_data():
                 st.dataframe(df.head(5))
 
         except Exception as e:
-            st.write(e)
             st.write(e)
