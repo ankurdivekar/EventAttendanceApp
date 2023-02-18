@@ -1,5 +1,4 @@
 import sqlite3
-import uuid
 from datetime import datetime, date
 import pandas as pd
 import streamlit as st
@@ -84,14 +83,6 @@ def reinitialize_db():
         st.write(conn)  # success message?
         cur = conn.cursor()
 
-        # Reset {st.secrets['master_table_name']} Table
-        cur.execute(f"DROP TABLE IF EXISTS {st.secrets['master_table_name']}")
-        cur.execute(
-            f"CREATE TABLE {st.secrets['master_table_name']} (UUID UNIQUE, \
-                FirstName TEXT, LastName TEXT, \
-                MobileNo TEXT PRIMARY KEY, Email TEXT, City TEXT)"
-        )
-
         # Reset Attendance Table
         cur.execute(f"DROP TABLE IF EXISTS {st.secrets['attendees_table_name']}")
         cur.execute(
@@ -100,66 +91,74 @@ def reinitialize_db():
                 MobileNo TEXT, Email TEXT, Date TEXT, Time TEXT, UNIQUE(UUID, Date))"
         )
 
-        cur.execute(
-            f"INSERT INTO {st.secrets['master_table_name']} (UUID, \
-                FirstName, LastName, MobileNo, Email, City) VALUES (?, ?, ?, ?, ?, ?)",
-            (
-                str(uuid.uuid4()),
-                "Ankur",
-                "Divekar",
-                "1111111111",
-                "ankur@streamlit.com",
-                "Mumbai",
-            ),
-        )
-        cur.execute(
-            f"INSERT INTO {st.secrets['master_table_name']} (UUID, \
-                FirstName, LastName, MobileNo, Email, City) VALUES (?, ?, ?, ?, ?, ?)",
-            (
-                str(uuid.uuid4()),
-                "Meghana",
-                "Dharap",
-                "2222222222",
-                "meghana@streamlit.com",
-                "Mumbai",
-            ),
-        )
-        cur.execute(
-            f"INSERT INTO {st.secrets['master_table_name']} (UUID, \
-                FirstName, LastName, MobileNo, Email, City) VALUES (?, ?, ?, ?, ?, ?)",
-            (
-                str(uuid.uuid4()),
-                "Divyanshu",
-                "Ganatra",
-                "3333333333",
-                "divyanshu@streamlit.com",
-                "Pune",
-            ),
-        )
-        cur.execute(
-            f"INSERT INTO {st.secrets['master_table_name']} (UUID, \
-                FirstName, LastName, MobileNo, Email, City) VALUES (?, ?, ?, ?, ?, ?)",
-            (
-                str(uuid.uuid4()),
-                "Nimisha",
-                "Ganatra",
-                "4444444444",
-                "nimisha@streamlit.com",
-                "Pune",
-            ),
-        )
-        cur.execute(
-            f"INSERT INTO {st.secrets['master_table_name']} (UUID, \
-                FirstName, LastName, MobileNo, Email, City) VALUES (?, ?, ?, ?, ?, ?)",
-            (
-                str(uuid.uuid4()),
-                "Khushroo",
-                "Mehta",
-                "5555555555",
-                "khushroo@streamlit.com",
-                "Pune",
-            ),
-        )
+        # # Reset {st.secrets['master_table_name']} Table
+        # cur.execute(f"DROP TABLE IF EXISTS {st.secrets['master_table_name']}")
+        # cur.execute(
+        #     f"CREATE TABLE {st.secrets['master_table_name']} (UUID UNIQUE, \
+        #         FirstName TEXT, LastName TEXT, \
+        #         MobileNo TEXT PRIMARY KEY, Email TEXT, City TEXT)"
+        # )
+
+        # cur.execute(
+        #     f"INSERT INTO {st.secrets['master_table_name']} (UUID, \
+        #         FirstName, LastName, MobileNo, Email, City) VALUES (?, ?, ?, ?, ?, ?)",
+        #     (
+        #         str(uuid.uuid4()),
+        #         "Ankur",
+        #         "Divekar",
+        #         "1111111111",
+        #         "ankur@streamlit.com",
+        #         "Mumbai",
+        #     ),
+        # )
+        # cur.execute(
+        #     f"INSERT INTO {st.secrets['master_table_name']} (UUID, \
+        #         FirstName, LastName, MobileNo, Email, City) VALUES (?, ?, ?, ?, ?, ?)",
+        #     (
+        #         str(uuid.uuid4()),
+        #         "Meghana",
+        #         "Dharap",
+        #         "2222222222",
+        #         "meghana@streamlit.com",
+        #         "Mumbai",
+        #     ),
+        # )
+        # cur.execute(
+        #     f"INSERT INTO {st.secrets['master_table_name']} (UUID, \
+        #         FirstName, LastName, MobileNo, Email, City) VALUES (?, ?, ?, ?, ?, ?)",
+        #     (
+        #         str(uuid.uuid4()),
+        #         "Divyanshu",
+        #         "Ganatra",
+        #         "3333333333",
+        #         "divyanshu@streamlit.com",
+        #         "Pune",
+        #     ),
+        # )
+        # cur.execute(
+        #     f"INSERT INTO {st.secrets['master_table_name']} (UUID, \
+        #         FirstName, LastName, MobileNo, Email, City) VALUES (?, ?, ?, ?, ?, ?)",
+        #     (
+        #         str(uuid.uuid4()),
+        #         "Nimisha",
+        #         "Ganatra",
+        #         "4444444444",
+        #         "nimisha@streamlit.com",
+        #         "Pune",
+        #     ),
+        # )
+        # cur.execute(
+        #     f"INSERT INTO {st.secrets['master_table_name']} (UUID, \
+        #         FirstName, LastName, MobileNo, Email, City) VALUES (?, ?, ?, ?, ?, ?)",
+        #     (
+        #         str(uuid.uuid4()),
+        #         "Khushroo",
+        #         "Mehta",
+        #         "5555555555",
+        #         "khushroo@streamlit.com",
+        #         "Pune",
+        #     ),
+        # )
         conn.commit()
 
 

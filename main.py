@@ -12,7 +12,7 @@ def manage_entry():
         # st.write(qr_code)
         found = register_entry(qr_code)
         if found:
-            st.success(f"Entry registered for:{found}")
+            st.write(f"Entry registered for:{found}")
             st.write(found)
         else:
             st.error("No record found!")
