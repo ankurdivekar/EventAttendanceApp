@@ -12,7 +12,9 @@ def manage_entry():
         # st.write(qr_code)
         found = register_entry(qr_code)
         if found:
-            st.title(found)
+            st.markdown(f"## Entry registered for:\n{found}")
+        else:
+            st.markdown("## :red[No record found!]")
 
 
 def database_ops():

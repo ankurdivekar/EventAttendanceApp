@@ -57,11 +57,10 @@ def register_entry(qr_code):
                     {results_df.FirstName.iloc[0]} {results_df.LastName.iloc[0]}"
 
             except sqlite3.IntegrityError:
-                return f"Entry already registered for\n\
-                    {results_df.FirstName.iloc[0]} {results_df.LastName.iloc[0]}"
+                return f"{results_df.FirstName.iloc[0]} {results_df.LastName.iloc[0]}"
 
         else:
-            return "No record found!"
+            return None
 
 
 def show_db():
