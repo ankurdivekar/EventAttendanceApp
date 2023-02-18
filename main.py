@@ -1,9 +1,7 @@
-import sqlite3
 import streamlit as st
-import pandas as pd
-import uuid
-
 from streamlit_qrcode_scanner import qrcode_scanner
+
+from db_operations import reinitialize_db, show_db
 
 
 def manage_entry():
@@ -14,7 +12,18 @@ def manage_entry():
 
 
 def database_ops():
-    pass
+
+    st.markdown("# View Database")
+    view_db = st.button("View Database")
+    if view_db:
+        show_db()
+    st.markdown("""---""")
+
+    st.markdown("# Reset Database")
+    reset_db = st.button("Reset Database")
+    if reset_db:
+        reinitialize_db()
+    st.markdown("""---""")
 
 
 st.sidebar.markdown("""---""")
