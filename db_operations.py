@@ -34,29 +34,31 @@ def register_entry(qr_code):
             results_df = pd.DataFrame.from_records(data=data, columns=cols)
             # st.dataframe(results_df)
 
-            try:
-                # Write to the attendance table
-                cur = conn.cursor()
-                cur.execute(
-                    f"INSERT INTO {st.secrets['attendees_table_name']} (UUID, \
-                    FirstName, LastName, MobileNo, Email, Date, Time) \
-                        VALUES (?, ?, ?, ?, ?, ?, ?)",
-                    (
-                        results_df.UUID.iloc[0],
-                        results_df.FirstName.iloc[0],
-                        results_df.LastName.iloc[0],
-                        results_df.MobileNo.iloc[0],
-                        results_df.Email.iloc[0],
-                        str(date.today()),
-                        str(datetime.now().strftime("%H:%M:%S")),
-                    ),
-                )
-                conn.commit()
+            # try:
+            # Write to the attendance table
+            cur = conn.cursor()
+            cur.execute(
+                f"INSERT INTO {st.secrets['attendees_table_name']} (UUID, \
+                FirstName, LastName, MobileNo, Email, Date, Time) \
+                    VALUES (?, ?, ?, ?, ?, ?, ?)",
+                (
+                    results_df.UUID.iloc[0],
+                    results_df.FirstName.iloc[0],
+                    results_df.LastName.iloc[0],
+                    results_df.MobileNo.iloc[0],
+                    results_df.Email.iloc[0],
+                    str(date.today()),
+                    str(datetime.now().strftime("%H:%M:%S")),
+                ),
+            )
+            conn.commit()
 
-                return f"Entry: {results_df.FirstName.iloc[0]} {results_df.LastName.iloc[0]}"
+            return (
+                f"Entry: {results_df.FirstName.iloc[0]} {results_df.LastName.iloc[0]}"
+            )
 
-            except:
-                return f"Entry already registered!: {results_df.FirstName.iloc[0]} {results_df.LastName.iloc[0]}"
+            # except:
+            #     return f"Entry already registered!: {results_df.FirstName.iloc[0]} {results_df.LastName.iloc[0]}"
 
         else:
             st.write("No record found!")
@@ -98,7 +100,7 @@ def reinitialize_db():
         cur.execute(
             f"CREATE TABLE {st.secrets['attendees_table_name']} (UUID, \
                 FirstName TEXT, LastName TEXT, \
-                MobileNo TEXT, Email TEXT, Date TEXT UNIQUE, Time TEXT)"
+                MobileNo TEXT, Email TEXT, Date TEXT, Time TEXT, UNIQUE(UUID, Date))"
         )
 
         cur.execute(
@@ -156,7 +158,7 @@ def reinitialize_db():
                 str(uuid.uuid4()),
                 "Khushroo",
                 "Mehta",
-                "555555555",
+                "5555555555",
                 "khushroo@streamlit.com",
                 "Pune",
             ),
