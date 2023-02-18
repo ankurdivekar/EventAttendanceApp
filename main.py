@@ -1,7 +1,13 @@
 import streamlit as st
 from streamlit_qrcode_scanner import qrcode_scanner
 
-from db_operations import reinitialize_db, show_db, register_entry
+from db_operations import (
+    download_data,
+    reinitialize_db,
+    show_db,
+    register_entry,
+    upload_data,
+)
 
 
 def manage_entry():
@@ -30,6 +36,14 @@ def database_ops():
     reset_db = st.button("Reset Database")
     if reset_db:
         reinitialize_db()
+    st.markdown("""---""")
+
+    st.markdown(" # Download Data")
+    download_data()
+    st.markdown("""---""")
+
+    st.markdown(" # Upload Data")
+    upload_data()
     st.markdown("""---""")
 
 

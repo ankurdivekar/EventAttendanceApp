@@ -162,6 +162,21 @@ def reinitialize_db():
         conn.commit()
 
 
+def download_data():
+    with create_connection(st.secrets["db_file"]) as conn:
+        st.write(conn)  # success message?
+
+        query = conn.execute(f"SELECT * FROM {st.secrets['master_table_name']}")
+        cols = [column[0] for column in query.description]
+        results_df = pd.DataFrame.from_records(data=query.fetchall(), columns=cols)
+        st.download_button(
+            label="Download Data",
+            data=results_df.to_csv(index=False),
+            file_name="Master_Data.csv",
+            mime="text/csv",
+        )
+
+
 def upload_data():
     st.error("WARNING: Uploading will overwrite the existing data in the database.")
     uploaded_file = st.file_uploader("Choose a file")
