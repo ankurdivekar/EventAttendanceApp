@@ -11,7 +11,8 @@ def manage_entry():
     if qr_code:
         # st.write(qr_code)
         found = register_entry(qr_code)
-        st.title(found)
+        if found:
+            st.title(found)
 
 
 def database_ops():
