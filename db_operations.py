@@ -54,8 +54,9 @@ def register_entry(qr_code):
                 conn.commit()
 
                 return f"Entry: {results_df.FirstName.iloc[0]} {results_df.LastName.iloc[0]}"
+
             except:
-                return "Entry already registered!"
+                return f"Entry already registered!: {results_df.FirstName.iloc[0]} {results_df.LastName.iloc[0]}"
 
         else:
             st.write("No record found!")
