@@ -61,8 +61,7 @@ def register_entry(qr_code):
                     {results_df.FirstName.iloc[0]} {results_df.LastName.iloc[0]}"
 
         else:
-            st.write("No record found!")
-            return None
+            return "No record found!"
 
 
 def show_db():
