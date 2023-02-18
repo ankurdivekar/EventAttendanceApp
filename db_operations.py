@@ -1,5 +1,6 @@
 import sqlite3
 from datetime import datetime, date
+import uuid
 import pandas as pd
 import streamlit as st
 
@@ -183,7 +184,18 @@ def upload_data():
     if uploaded_file is not None:
         # read csv
         try:
-            df = pd.read_csv(uploaded_file)
+            print(50 * "____")
+            # Read CSV to dataframe and fill UUID column with new UUIDs where NaN
+            df = (
+                pd.read_csv(uploaded_file)
+                .assign(
+                    UUID=lambda x: x.UUID.apply(
+                        lambda y: str(uuid.uuid4()) if pd.isna(y) else y
+                    )
+                )
+                .set_index("UUID")
+            )
+            # print(df)
             with create_connection(st.secrets["db_file"]) as conn:
                 cur = conn.cursor()
                 cur.execute(f"DROP TABLE IF EXISTS {st.secrets['master_table_name']}")

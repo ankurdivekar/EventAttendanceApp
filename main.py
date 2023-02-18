@@ -24,25 +24,28 @@ def manage_entry():
             # st.markdown("## :red[No record found!]")
 
 
-def database_ops():
+def database_view():
 
-    st.markdown("# View Database")
+    st.markdown("# View Attendees Database")
     view_db = st.button("View Database")
     if view_db:
         show_db()
     st.markdown("""---""")
 
-    st.markdown("# Reset Database")
+    st.markdown("# Reset Attendees Database")
     reset_db = st.button("Reset Database")
     if reset_db:
         reinitialize_db()
     st.markdown("""---""")
 
-    st.markdown(" # Download Data")
+
+def database_admin():
+
+    st.markdown(" # Download Master Data")
     download_data()
     st.markdown("""---""")
 
-    st.markdown(" # Upload Data")
+    st.markdown(" # Upload Master Data")
     upload_data()
     st.markdown("""---""")
 
@@ -54,7 +57,8 @@ st.sidebar.markdown("""---""")
 
 page_names_to_funcs = {
     "Register Entry": manage_entry,
-    "Database Ops": database_ops,
+    "Database: Attendees": database_view,
+    "Database: Master": database_admin,
 }
 
 selected_page = st.sidebar.selectbox("Select a page", page_names_to_funcs.keys())
