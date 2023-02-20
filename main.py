@@ -3,19 +3,17 @@ from streamlit_qrcode_scanner import qrcode_scanner
 
 from db_operations import (
     download_data,
+    register_entry,
     reinitialize_db,
     show_db,
-    register_entry,
     upload_data,
 )
 
 
 def manage_entry():
-    # st.camera_input("Scan QR code")
     qr_code = qrcode_scanner(key="qrcode_scanner")
-
     if qr_code:
-        # st.write(qr_code)
+        st.write(qr_code)
         found = register_entry(qr_code)
         if found:
             st.success(found)
