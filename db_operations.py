@@ -65,31 +65,33 @@ def register_entry(qr_code):
 
 def show_attendees_today():
     with create_connection(st.secrets["db_file"]) as conn:
-        st.write(conn)  # success message?
+        # st.write(conn)  # success message?
 
-        st.write("Attendees Table")
         query = conn.execute(
             f"SELECT * FROM {st.secrets['attendees_table_name']} WHERE Date = '{str(date.today())}'"
         )
         cols = [column[0] for column in query.description]
         results_df = pd.DataFrame.from_records(data=query.fetchall(), columns=cols)
+
+        st.write(f"Attendees today: {len(results_df)}")
         st.dataframe(results_df)
 
 
 def show_attendees_all():
     with create_connection(st.secrets["db_file"]) as conn:
-        st.write(conn)  # success message?
+        # st.write(conn)  # success message?
 
-        st.write("Attendees Table")
         query = conn.execute(f"SELECT * FROM {st.secrets['attendees_table_name']}")
         cols = [column[0] for column in query.description]
         results_df = pd.DataFrame.from_records(data=query.fetchall(), columns=cols)
+
+        st.write(f"Total attendees: {len(results_df)}")
         st.dataframe(results_df)
 
 
 def show_master():
     with create_connection(st.secrets["db_file"]) as conn:
-        st.write(conn)  # success message?
+        # st.write(conn)  # success message?
 
         st.write("Master Table")
         query = conn.execute(f"SELECT * FROM {st.secrets['master_table_name']}")
@@ -100,7 +102,7 @@ def show_master():
 
 def reinitialize_master_db():
     with create_connection(st.secrets["db_file"]) as conn:
-        st.write(conn)  # success message?
+        # st.write(conn)  # success message?
         cur = conn.cursor()
 
         # # Reset {st.secrets['master_table_name']} Table
@@ -176,7 +178,7 @@ def reinitialize_master_db():
 
 def reinitialize_attendees_db():
     with create_connection(st.secrets["db_file"]) as conn:
-        st.write(conn)  # success message?
+        # st.write(conn)  # success message?
         cur = conn.cursor()
 
         # Reset Attendance Table
@@ -252,7 +254,7 @@ def reinitialize_attendees_db():
 
 def download_data():
     with create_connection(st.secrets["db_file"]) as conn:
-        st.write(conn)  # success message?
+        # st.write(conn)  # success message?
 
         query = conn.execute(f"SELECT * FROM {st.secrets['master_table_name']}")
         cols = [column[0] for column in query.description]
