@@ -1,6 +1,8 @@
+import datetime
+import random
 import sqlite3
 import uuid
-from datetime import date, datetime
+from datetime import date
 
 import pandas as pd
 import streamlit as st
@@ -47,7 +49,7 @@ def register_entry(qr_code):
                         results_df.MobileNo.iloc[0],
                         results_df.Email.iloc[0],
                         str(date.today()),
-                        str(datetime.now().strftime("%H:%M:%S")),
+                        str(datetime.datetime.now().strftime("%H:%M:%S")),
                     ),
                 )
                 conn.commit()
@@ -61,7 +63,20 @@ def register_entry(qr_code):
             return None
 
 
-def show_db():
+def show_attendees_today():
+    with create_connection(st.secrets["db_file"]) as conn:
+        st.write(conn)  # success message?
+
+        st.write("Attendees Table")
+        query = conn.execute(
+            f"SELECT * FROM {st.secrets['attendees_table_name']} WHERE Date = '{str(date.today())}'"
+        )
+        cols = [column[0] for column in query.description]
+        results_df = pd.DataFrame.from_records(data=query.fetchall(), columns=cols)
+        st.dataframe(results_df)
+
+
+def show_attendees_all():
     with create_connection(st.secrets["db_file"]) as conn:
         st.write(conn)  # success message?
 
@@ -71,6 +86,11 @@ def show_db():
         results_df = pd.DataFrame.from_records(data=query.fetchall(), columns=cols)
         st.dataframe(results_df)
 
+
+def show_master():
+    with create_connection(st.secrets["db_file"]) as conn:
+        st.write(conn)  # success message?
+
         st.write("Master Table")
         query = conn.execute(f"SELECT * FROM {st.secrets['master_table_name']}")
         cols = [column[0] for column in query.description]
@@ -78,18 +98,10 @@ def show_db():
         st.dataframe(results_df)
 
 
-def reinitialize_db():
+def reinitialize_master_db():
     with create_connection(st.secrets["db_file"]) as conn:
         st.write(conn)  # success message?
         cur = conn.cursor()
-
-        # Reset Attendance Table
-        cur.execute(f"DROP TABLE IF EXISTS {st.secrets['attendees_table_name']}")
-        cur.execute(
-            f"CREATE TABLE {st.secrets['attendees_table_name']} (UUID, \
-                FirstName TEXT, LastName TEXT, \
-                MobileNo TEXT, Email TEXT, Date TEXT, Time TEXT, UNIQUE(UUID, Date))"
-        )
 
         # # Reset {st.secrets['master_table_name']} Table
         # cur.execute(f"DROP TABLE IF EXISTS {st.secrets['master_table_name']}")
@@ -162,6 +174,82 @@ def reinitialize_db():
         conn.commit()
 
 
+def reinitialize_attendees_db():
+    with create_connection(st.secrets["db_file"]) as conn:
+        st.write(conn)  # success message?
+        cur = conn.cursor()
+
+        # Reset Attendance Table
+        cur.execute(f"DROP TABLE IF EXISTS {st.secrets['attendees_table_name']}")
+        cur.execute(
+            f"CREATE TABLE {st.secrets['attendees_table_name']} (UUID, \
+                FirstName TEXT, LastName TEXT, \
+                Category TEXT, Date TEXT, Time TEXT, UNIQUE(UUID, Date))"
+        )
+
+        cur.execute(
+            f"INSERT INTO {st.secrets['attendees_table_name']} (UUID, \
+                FirstName, LastName, Category, Date, Time) VALUES (?, ?, ?, ?, ?, ?)",
+            (
+                str(uuid.uuid4()),
+                "Ankur",
+                "Divekar",
+                random.choice(["PWD", "Able-bodied"]),
+                str(date.today() - datetime.timedelta(days=random.choice([0, 1, 2]))),
+                str(datetime.datetime.now().strftime("%H:%M:%S")),
+            ),
+        )
+        cur.execute(
+            f"INSERT INTO {st.secrets['attendees_table_name']} (UUID, \
+                FirstName, LastName, Category, Date, Time) VALUES (?, ?, ?, ?, ?, ?)",
+            (
+                str(uuid.uuid4()),
+                "Meghana",
+                "Dharap",
+                random.choice(["PWD", "Able-bodied"]),
+                str(date.today() - datetime.timedelta(days=random.choice([0, 1, 2]))),
+                str(datetime.datetime.now().strftime("%H:%M:%S")),
+            ),
+        )
+        cur.execute(
+            f"INSERT INTO {st.secrets['attendees_table_name']} (UUID, \
+                FirstName, LastName, Category, Date, Time) VALUES (?, ?, ?, ?, ?, ?)",
+            (
+                str(uuid.uuid4()),
+                "Divyanshu",
+                "Ganatra",
+                random.choice(["PWD", "Able-bodied"]),
+                str(date.today() - datetime.timedelta(days=random.choice([0, 1, 2]))),
+                str(datetime.datetime.now().strftime("%H:%M:%S")),
+            ),
+        )
+        cur.execute(
+            f"INSERT INTO {st.secrets['attendees_table_name']} (UUID, \
+                FirstName, LastName, Category, Date, Time) VALUES (?, ?, ?, ?, ?, ?)",
+            (
+                str(uuid.uuid4()),
+                "Nimisha",
+                "Ganatra",
+                random.choice(["PWD", "Able-bodied"]),
+                str(date.today() - datetime.timedelta(days=random.choice([0, 1, 2]))),
+                str(datetime.datetime.now().strftime("%H:%M:%S")),
+            ),
+        )
+        cur.execute(
+            f"INSERT INTO {st.secrets['attendees_table_name']} (UUID, \
+                FirstName, LastName, Category, Date, Time) VALUES (?, ?, ?, ?, ?, ?)",
+            (
+                str(uuid.uuid4()),
+                "Khushroo",
+                "Mehta",
+                random.choice(["PWD", "Able-bodied"]),
+                str(date.today() - datetime.timedelta(days=random.choice([0, 1, 2]))),
+                str(datetime.datetime.now().strftime("%H:%M:%S")),
+            ),
+        )
+        conn.commit()
+
+
 def download_data():
     with create_connection(st.secrets["db_file"]) as conn:
         st.write(conn)  # success message?
@@ -204,5 +292,6 @@ def upload_data():
                 st.dataframe(df.head(5))
 
         except Exception as e:
+            st.write(e)
             st.write(e)
             st.write(e)

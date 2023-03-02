@@ -4,8 +4,11 @@ from streamlit_qrcode_scanner import qrcode_scanner
 from db_operations import (
     download_data,
     register_entry,
-    reinitialize_db,
-    show_db,
+    reinitialize_attendees_db,
+    reinitialize_master_db,
+    show_attendees_all,
+    show_attendees_today,
+    show_master,
     upload_data,
 )
 
@@ -22,18 +25,28 @@ def manage_entry():
 
 def database_view():
 
+    st.markdown("# View Today's Attendees")
+    if st.button("Get today's records"):
+        show_attendees_today()
+    st.markdown("""---""")
+
     st.markdown("# View Attendees Database")
-    if st.button("View Database"):
-        show_db()
+    if st.button("Get all records"):
+        show_attendees_all()
     st.markdown("""---""")
 
     st.markdown("# Reset Attendees Database")
     if st.button("Reset Database"):
-        reinitialize_db()
+        reinitialize_attendees_db()
     st.markdown("""---""")
 
 
 def database_admin():
+
+    st.markdown("# View Master Database")
+    if st.button("View Database"):
+        show_master()
+    st.markdown("""---""")
 
     st.markdown(" # Download Master Data")
     download_data()
