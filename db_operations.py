@@ -1,6 +1,7 @@
 import sqlite3
-from datetime import datetime, date
 import uuid
+from datetime import date, datetime
+
 import pandas as pd
 import streamlit as st
 
@@ -27,9 +28,7 @@ def register_entry(qr_code):
         query = conn.execute(
             f"SELECT * FROM {st.secrets['master_table_name']} WHERE UUID ='{qr_code}'"
         )
-        data = query.fetchall()
-        # print(data)
-        if data:
+        if data := query.fetchall():
             cols = [column[0] for column in query.description]
             results_df = pd.DataFrame.from_records(data=data, columns=cols)
             # st.dataframe(results_df)
@@ -205,4 +204,5 @@ def upload_data():
                 st.dataframe(df.head(5))
 
         except Exception as e:
+            st.write(e)
             st.write(e)

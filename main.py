@@ -11,11 +11,9 @@ from db_operations import (
 
 
 def manage_entry():
-    qr_code = qrcode_scanner(key="qrcode_scanner")
-    if qr_code:
+    if qr_code := qrcode_scanner(key="qrcode_scanner"):
         st.write(qr_code)
-        found = register_entry(qr_code)
-        if found:
+        if found := register_entry(qr_code):
             st.success(found)
         else:
             st.error("No record found!")
@@ -25,14 +23,12 @@ def manage_entry():
 def database_view():
 
     st.markdown("# View Attendees Database")
-    view_db = st.button("View Database")
-    if view_db:
+    if st.button("View Database"):
         show_db()
     st.markdown("""---""")
 
     st.markdown("# Reset Attendees Database")
-    reset_db = st.button("Reset Database")
-    if reset_db:
+    if st.button("Reset Database"):
         reinitialize_db()
     st.markdown("""---""")
 
