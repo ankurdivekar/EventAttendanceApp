@@ -15,7 +15,7 @@ from db_operations import (
 
 def manage_entry():
     if qr_code := qrcode_scanner(key="qrcode_scanner"):
-        st.write(qr_code)
+        # st.write(qr_code)
         if found := register_entry(qr_code):
             st.success(found)
         else:

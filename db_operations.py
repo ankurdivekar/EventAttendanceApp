@@ -57,10 +57,10 @@ def register_entry(qr_code):
                 )
                 conn.commit()
 
-                return f"{results_df.FirstName.iloc[0]} {results_df.LastName.iloc[0]}"
+                return f"{results_df.Category.iloc[0]}: {results_df.FirstName.iloc[0]} {results_df.LastName.iloc[0]}"
 
             except sqlite3.IntegrityError:
-                return f"{results_df.FirstName.iloc[0]} {results_df.LastName.iloc[0]}"
+                return f"{results_df.Category.iloc[0]}: {results_df.FirstName.iloc[0]} {results_df.LastName.iloc[0]}"
 
             except Exception as e:
                 st.write(e)
