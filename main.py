@@ -35,11 +35,6 @@ def database_view():
         show_attendees_all()
     st.markdown("""---""")
 
-    st.markdown("# Reset Attendees Database")
-    if st.button("Reset Database"):
-        reinitialize_attendees_db()
-    st.markdown("""---""")
-
 
 def database_admin():
 
@@ -50,11 +45,6 @@ def database_admin():
 
     st.markdown(" # Download Master Data")
     download_data()
-    st.markdown("""---""")
-
-    st.markdown("# Reset Master Database")
-    if st.button("Reset Database"):
-        reinitialize_master_db()
     st.markdown("""---""")
 
     st.markdown(" # Upload Master Data")
@@ -69,7 +59,16 @@ def database_admin():
             upload_data(uploaded_file)
         else:
             st.write("Please select file to upload!")
+    st.markdown("""---""")
 
+    st.markdown("# Reset Attendees Database")
+    if st.button("Reset Database"):
+        reinitialize_attendees_db()
+    st.markdown("""---""")
+
+    st.markdown("# Reset Master Database")
+    if st.button("Reset Database"):
+        reinitialize_master_db()
     st.markdown("""---""")
 
 
@@ -80,8 +79,8 @@ st.sidebar.markdown("""---""")
 
 page_names_to_funcs = {
     "Register Entry": manage_entry,
-    "Database: Attendees": database_view,
-    "Database: Master": database_admin,
+    "View Database": database_view,
+    # "Database Admin": database_admin,
 }
 
 selected_page = st.sidebar.selectbox("Select a page", page_names_to_funcs.keys())
