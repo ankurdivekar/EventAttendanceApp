@@ -44,14 +44,13 @@ def register_entry(qr_code):
                 cur = conn.cursor()
                 cur.execute(
                     f"INSERT INTO {st.secrets['attendees_table_name']} (UUID, \
-                    FirstName, LastName, MobileNo, Email, Date, Time) \
-                        VALUES (?, ?, ?, ?, ?, ?, ?)",
+                    FirstName, LastName, Category, Date, Time) \
+                        VALUES (?, ?, ?, ?, ?, ?)",
                     (
                         results_df.UUID.iloc[0],
                         results_df.FirstName.iloc[0],
                         results_df.LastName.iloc[0],
-                        results_df.MobileNo.iloc[0],
-                        results_df.Email.iloc[0],
+                        results_df.Category.iloc[0],
                         str(date.today()),
                         str(datetime.datetime.now().strftime("%H:%M:%S")),
                     ),
@@ -132,67 +131,6 @@ def reinitialize_attendees_db():
                 FirstName TEXT, LastName TEXT, \
                 Category TEXT, Date TEXT, Time TEXT, UNIQUE(UUID, Date))"
         )
-
-        # cur.execute(
-        #     f"INSERT INTO {st.secrets['attendees_table_name']} (UUID, \
-        #         FirstName, LastName, Category, Date, Time) VALUES (?, ?, ?, ?, ?, ?)",
-        #     (
-        #         str(uuid.uuid4()),
-        #         "Ankur",
-        #         "Divekar",
-        #         random.choice(["PWD", "Able-bodied"]),
-        #         str(date.today() - datetime.timedelta(days=random.choice([0, 1, 2]))),
-        #         str(datetime.datetime.now().strftime("%H:%M:%S")),
-        #     ),
-        # )
-        # cur.execute(
-        #     f"INSERT INTO {st.secrets['attendees_table_name']} (UUID, \
-        #         FirstName, LastName, Category, Date, Time) VALUES (?, ?, ?, ?, ?, ?)",
-        #     (
-        #         str(uuid.uuid4()),
-        #         "Meghana",
-        #         "Dharap",
-        #         random.choice(["PWD", "Able-bodied"]),
-        #         str(date.today() - datetime.timedelta(days=random.choice([0, 1, 2]))),
-        #         str(datetime.datetime.now().strftime("%H:%M:%S")),
-        #     ),
-        # )
-        # cur.execute(
-        #     f"INSERT INTO {st.secrets['attendees_table_name']} (UUID, \
-        #         FirstName, LastName, Category, Date, Time) VALUES (?, ?, ?, ?, ?, ?)",
-        #     (
-        #         str(uuid.uuid4()),
-        #         "Divyanshu",
-        #         "Ganatra",
-        #         random.choice(["PWD", "Able-bodied"]),
-        #         str(date.today() - datetime.timedelta(days=random.choice([0, 1, 2]))),
-        #         str(datetime.datetime.now().strftime("%H:%M:%S")),
-        #     ),
-        # )
-        # cur.execute(
-        #     f"INSERT INTO {st.secrets['attendees_table_name']} (UUID, \
-        #         FirstName, LastName, Category, Date, Time) VALUES (?, ?, ?, ?, ?, ?)",
-        #     (
-        #         str(uuid.uuid4()),
-        #         "Nimisha",
-        #         "Ganatra",
-        #         random.choice(["PWD", "Able-bodied"]),
-        #         str(date.today() - datetime.timedelta(days=random.choice([0, 1, 2]))),
-        #         str(datetime.datetime.now().strftime("%H:%M:%S")),
-        #     ),
-        # )
-        # cur.execute(
-        #     f"INSERT INTO {st.secrets['attendees_table_name']} (UUID, \
-        #         FirstName, LastName, Category, Date, Time) VALUES (?, ?, ?, ?, ?, ?)",
-        #     (
-        #         str(uuid.uuid4()),
-        #         "Khushroo",
-        #         "Mehta",
-        #         random.choice(["PWD", "Able-bodied"]),
-        #         str(date.today() - datetime.timedelta(days=random.choice([0, 1, 2]))),
-        #         str(datetime.datetime.now().strftime("%H:%M:%S")),
-        #     ),
-        # )
         conn.commit()
 
 
