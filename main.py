@@ -49,8 +49,7 @@ def database_admin():
     st.markdown("""---""")
 
     st.markdown(" # Download Master Data")
-    if st.button("Download Database"):
-        download_data()
+    download_data()
     st.markdown("""---""")
 
     st.markdown("# Reset Master Database")

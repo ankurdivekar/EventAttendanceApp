@@ -24,6 +24,10 @@ def create_connection(db_file):
 
 
 def register_entry(qr_code):
+    if "ABBF" not in qr_code:
+        return None
+
+    qr_code = qr_code.split("ABBF:")[1]
     # Find the entry in the master table
     with create_connection(st.secrets["db_file"]) as conn:
 
@@ -227,4 +231,4 @@ def overwrite_table_from_df(conn, table, df):
     df.to_sql(name=table, con=conn)
     st.write("Data uploaded successfully. These are the first 5 rows.")
     st.dataframe(df.head(5))
-    cur.commit()
+    conn.commit()
