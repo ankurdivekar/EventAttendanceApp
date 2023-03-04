@@ -102,77 +102,17 @@ def show_master():
 
 def reinitialize_master_db():
     with create_connection(st.secrets["db_file"]) as conn:
-        # st.write(conn)  # success message?
+        st.write(conn)  # success message?
         cur = conn.cursor()
 
-        # # Reset {st.secrets['master_table_name']} Table
-        # cur.execute(f"DROP TABLE IF EXISTS {st.secrets['master_table_name']}")
-        # cur.execute(
-        #     f"CREATE TABLE {st.secrets['master_table_name']} (UUID UNIQUE, \
-        #         FirstName TEXT, LastName TEXT, \
-        #         MobileNo TEXT PRIMARY KEY, Email TEXT, City TEXT)"
-        # )
-
-        # cur.execute(
-        #     f"INSERT INTO {st.secrets['master_table_name']} (UUID, \
-        #         FirstName, LastName, MobileNo, Email, City) VALUES (?, ?, ?, ?, ?, ?)",
-        #     (
-        #         str(uuid.uuid4()),
-        #         "Ankur",
-        #         "Divekar",
-        #         "1111111111",
-        #         "ankur@streamlit.com",
-        #         "Mumbai",
-        #     ),
-        # )
-        # cur.execute(
-        #     f"INSERT INTO {st.secrets['master_table_name']} (UUID, \
-        #         FirstName, LastName, MobileNo, Email, City) VALUES (?, ?, ?, ?, ?, ?)",
-        #     (
-        #         str(uuid.uuid4()),
-        #         "Meghana",
-        #         "Dharap",
-        #         "2222222222",
-        #         "meghana@streamlit.com",
-        #         "Mumbai",
-        #     ),
-        # )
-        # cur.execute(
-        #     f"INSERT INTO {st.secrets['master_table_name']} (UUID, \
-        #         FirstName, LastName, MobileNo, Email, City) VALUES (?, ?, ?, ?, ?, ?)",
-        #     (
-        #         str(uuid.uuid4()),
-        #         "Divyanshu",
-        #         "Ganatra",
-        #         "3333333333",
-        #         "divyanshu@streamlit.com",
-        #         "Pune",
-        #     ),
-        # )
-        # cur.execute(
-        #     f"INSERT INTO {st.secrets['master_table_name']} (UUID, \
-        #         FirstName, LastName, MobileNo, Email, City) VALUES (?, ?, ?, ?, ?, ?)",
-        #     (
-        #         str(uuid.uuid4()),
-        #         "Nimisha",
-        #         "Ganatra",
-        #         "4444444444",
-        #         "nimisha@streamlit.com",
-        #         "Pune",
-        #     ),
-        # )
-        # cur.execute(
-        #     f"INSERT INTO {st.secrets['master_table_name']} (UUID, \
-        #         FirstName, LastName, MobileNo, Email, City) VALUES (?, ?, ?, ?, ?, ?)",
-        #     (
-        #         str(uuid.uuid4()),
-        #         "Khushroo",
-        #         "Mehta",
-        #         "5555555555",
-        #         "khushroo@streamlit.com",
-        #         "Pune",
-        #     ),
-        # )
+        # Drop and recreate the master table
+        cur.execute(f"DROP TABLE IF EXISTS {st.secrets['master_table_name']}")
+        cur.execute(
+            f"CREATE TABLE {st.secrets['master_table_name']} (UUID, \
+                FirstName TEXT, LastName TEXT, \
+                MobileNumber TEXT, EmailAddress TEXT, Category TEXT, \
+                UNIQUE(UUID, MobileNumber))"
+        )
         conn.commit()
 
 
@@ -189,66 +129,66 @@ def reinitialize_attendees_db():
                 Category TEXT, Date TEXT, Time TEXT, UNIQUE(UUID, Date))"
         )
 
-        cur.execute(
-            f"INSERT INTO {st.secrets['attendees_table_name']} (UUID, \
-                FirstName, LastName, Category, Date, Time) VALUES (?, ?, ?, ?, ?, ?)",
-            (
-                str(uuid.uuid4()),
-                "Ankur",
-                "Divekar",
-                random.choice(["PWD", "Able-bodied"]),
-                str(date.today() - datetime.timedelta(days=random.choice([0, 1, 2]))),
-                str(datetime.datetime.now().strftime("%H:%M:%S")),
-            ),
-        )
-        cur.execute(
-            f"INSERT INTO {st.secrets['attendees_table_name']} (UUID, \
-                FirstName, LastName, Category, Date, Time) VALUES (?, ?, ?, ?, ?, ?)",
-            (
-                str(uuid.uuid4()),
-                "Meghana",
-                "Dharap",
-                random.choice(["PWD", "Able-bodied"]),
-                str(date.today() - datetime.timedelta(days=random.choice([0, 1, 2]))),
-                str(datetime.datetime.now().strftime("%H:%M:%S")),
-            ),
-        )
-        cur.execute(
-            f"INSERT INTO {st.secrets['attendees_table_name']} (UUID, \
-                FirstName, LastName, Category, Date, Time) VALUES (?, ?, ?, ?, ?, ?)",
-            (
-                str(uuid.uuid4()),
-                "Divyanshu",
-                "Ganatra",
-                random.choice(["PWD", "Able-bodied"]),
-                str(date.today() - datetime.timedelta(days=random.choice([0, 1, 2]))),
-                str(datetime.datetime.now().strftime("%H:%M:%S")),
-            ),
-        )
-        cur.execute(
-            f"INSERT INTO {st.secrets['attendees_table_name']} (UUID, \
-                FirstName, LastName, Category, Date, Time) VALUES (?, ?, ?, ?, ?, ?)",
-            (
-                str(uuid.uuid4()),
-                "Nimisha",
-                "Ganatra",
-                random.choice(["PWD", "Able-bodied"]),
-                str(date.today() - datetime.timedelta(days=random.choice([0, 1, 2]))),
-                str(datetime.datetime.now().strftime("%H:%M:%S")),
-            ),
-        )
-        cur.execute(
-            f"INSERT INTO {st.secrets['attendees_table_name']} (UUID, \
-                FirstName, LastName, Category, Date, Time) VALUES (?, ?, ?, ?, ?, ?)",
-            (
-                str(uuid.uuid4()),
-                "Khushroo",
-                "Mehta",
-                random.choice(["PWD", "Able-bodied"]),
-                str(date.today() - datetime.timedelta(days=random.choice([0, 1, 2]))),
-                str(datetime.datetime.now().strftime("%H:%M:%S")),
-            ),
-        )
+        # cur.execute(
+        #     f"INSERT INTO {st.secrets['attendees_table_name']} (UUID, \
+        #         FirstName, LastName, Category, Date, Time) VALUES (?, ?, ?, ?, ?, ?)",
+        #     (
+        #         str(uuid.uuid4()),
+        #         "Ankur",
+        #         "Divekar",
+        #         random.choice(["PWD", "Able-bodied"]),
+        #         str(date.today() - datetime.timedelta(days=random.choice([0, 1, 2]))),
+        #         str(datetime.datetime.now().strftime("%H:%M:%S")),
+        #     ),
+        # )
+        # cur.execute(
+        #     f"INSERT INTO {st.secrets['attendees_table_name']} (UUID, \
+        #         FirstName, LastName, Category, Date, Time) VALUES (?, ?, ?, ?, ?, ?)",
+        #     (
+        #         str(uuid.uuid4()),
+        #         "Meghana",
+        #         "Dharap",
+        #         random.choice(["PWD", "Able-bodied"]),
+        #         str(date.today() - datetime.timedelta(days=random.choice([0, 1, 2]))),
+        #         str(datetime.datetime.now().strftime("%H:%M:%S")),
+        #     ),
+        # )
+        # cur.execute(
+        #     f"INSERT INTO {st.secrets['attendees_table_name']} (UUID, \
+        #         FirstName, LastName, Category, Date, Time) VALUES (?, ?, ?, ?, ?, ?)",
+        #     (
+        #         str(uuid.uuid4()),
+        #         "Divyanshu",
+        #         "Ganatra",
+        #         random.choice(["PWD", "Able-bodied"]),
+        #         str(date.today() - datetime.timedelta(days=random.choice([0, 1, 2]))),
+        #         str(datetime.datetime.now().strftime("%H:%M:%S")),
+        #     ),
+        # )
+        # cur.execute(
+        #     f"INSERT INTO {st.secrets['attendees_table_name']} (UUID, \
+        #         FirstName, LastName, Category, Date, Time) VALUES (?, ?, ?, ?, ?, ?)",
+        #     (
+        #         str(uuid.uuid4()),
+        #         "Nimisha",
+        #         "Ganatra",
+        #         random.choice(["PWD", "Able-bodied"]),
+        #         str(date.today() - datetime.timedelta(days=random.choice([0, 1, 2]))),
+        #         str(datetime.datetime.now().strftime("%H:%M:%S")),
+        #     ),
+        # )
+        # cur.execute(
+        #     f"INSERT INTO {st.secrets['attendees_table_name']} (UUID, \
+        #         FirstName, LastName, Category, Date, Time) VALUES (?, ?, ?, ?, ?, ?)",
+        #     (
+        #         str(uuid.uuid4()),
+        #         "Khushroo",
+        #         "Mehta",
+        #         random.choice(["PWD", "Able-bodied"]),
+        #         str(date.today() - datetime.timedelta(days=random.choice([0, 1, 2]))),
+        #         str(datetime.datetime.now().strftime("%H:%M:%S")),
+        #     ),
+        # )
         conn.commit()
 
 
@@ -267,33 +207,24 @@ def download_data():
         )
 
 
-def upload_data():
-    st.error("WARNING: Uploading will overwrite the existing data in the database.")
-    uploaded_file = st.file_uploader("Choose a file")
-    if uploaded_file is not None:
-        # read csv
-        try:
-            print(50 * "____")
-            # Read CSV to dataframe and fill UUID column with new UUIDs where NaN
-            df = (
-                pd.read_csv(uploaded_file)
-                .assign(
-                    UUID=lambda x: x.UUID.apply(
-                        lambda y: str(uuid.uuid4()) if pd.isna(y) else y
-                    )
-                )
-                .set_index("UUID")
-            )
-            # print(df)
-            with create_connection(st.secrets["db_file"]) as conn:
-                cur = conn.cursor()
-                cur.execute(f"DROP TABLE IF EXISTS {st.secrets['master_table_name']}")
-                conn.commit()
-                df.to_sql(name=st.secrets["master_table_name"], con=conn)
-                st.write("Data uploaded successfully. These are the first 5 rows.")
-                st.dataframe(df.head(5))
+def upload_data(uploaded_file):
+    # read csv
+    try:
+        print(50 * "____")
+        # Read CSV to dataframe and fill UUID column with new UUIDs where NaN
+        df = pd.read_csv(uploaded_file, dtype=str).set_index("UUID")
+        # print(df)
+        with create_connection(st.secrets["db_file"]) as conn:
+            overwrite_table_from_df(conn, st.secrets["master_table_name"], df)
+    except Exception as e:
+        st.write(e)
 
-        except Exception as e:
-            st.write(e)
-            st.write(e)
-            st.write(e)
+
+# TODO Rename this here and in `upload_data`
+def overwrite_table_from_df(conn, table, df):
+    cur = conn.cursor()
+    cur.execute(f"DROP TABLE IF EXISTS {table}")
+    df.to_sql(name=table, con=conn)
+    st.write("Data uploaded successfully. These are the first 5 rows.")
+    st.dataframe(df.head(5))
+    cur.commit()

@@ -49,11 +49,28 @@ def database_admin():
     st.markdown("""---""")
 
     st.markdown(" # Download Master Data")
-    download_data()
+    if st.button("Download Database"):
+        download_data()
+    st.markdown("""---""")
+
+    st.markdown("# Reset Master Database")
+    if st.button("Reset Database"):
+        reinitialize_master_db()
     st.markdown("""---""")
 
     st.markdown(" # Upload Master Data")
-    upload_data()
+    st.error("WARNING: Uploading will overwrite the existing data in the database.")
+    uploaded_file = st.file_uploader(
+        "Choose a file",
+        type="csv",
+        accept_multiple_files=False,
+    )
+    if st.button("Upload to DB"):
+        if uploaded_file is not None:
+            upload_data(uploaded_file)
+        else:
+            st.write("Please select file to upload!")
+
     st.markdown("""---""")
 
 
