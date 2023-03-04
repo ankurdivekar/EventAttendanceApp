@@ -27,7 +27,7 @@ def register_entry(qr_code):
     if "ABBF" not in qr_code:
         return None
 
-    qr_code = qr_code.split("ABBF:")[1]
+    qr_code = qr_code.split(":")[1]
     # Find the entry in the master table
     with create_connection(st.secrets["db_file"]) as conn:
 
